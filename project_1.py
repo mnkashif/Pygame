@@ -92,20 +92,20 @@ class enemy(object):
         if self.vel > 0:
             win.blit(self.walkright[self.walkcount // 3], (self.x,self.y))
             self.walkcount +=1
-        else:
+        if self.vel<0:
             win.blit(self.walkleft[self.walkcount // 3], (self.x,self.y))
             self.walkcount +=1
 
     def move(self):
-        if self.vel>0:
+         if self.vel>0:
             if self.x + self.vel <self.path[1]:
                 self.x+=self.vel
                 
             else:
                 self.vel = self.vel * -1
                 self.walkcount = 0
-        else:
-            if self.x - self.vel >self.path[0]:
+         else:
+            if self.x - self.vel>self.path[0]:
                 self.x+=self.vel
             else:
                 self.vel = self.vel * -1
@@ -125,14 +125,14 @@ def redrawgamewindow():
 
 
 man = player(200,500,64,64)
-goblin = enemy(210,480,64,64,450)
+#goblin = enemy(210,480,64,64,450)
 bullets = []
 
-enemies = [goblin]
-#l=250
-#or i in range(1):
-#    enemies.append(enemy(l,480,64,64,450))
-    #l+=100
+enemies = []
+l=250
+for i in range(2):
+    enemies.append(enemy(l,480,64,64,450))
+    l+=80
 while run:
     clock=pygame.time.Clock()
     clock.tick(50)
@@ -155,17 +155,17 @@ while run:
             pygame.quit()
     for k in bullets:
         for i in enemies:
-            if i.x==k.x:
+            if k.x>=i.x :
                 enemies.pop(enemies.index(i))
-                    #ibreak
+                bullets.pop(bullets.index(k))
+                    
 
     redrawgamewindow()
     keys = pygame.key.get_pressed()
-    
-   # if man.x==goblin.x:
+
         
     if keys[pygame.K_SPACE]:
-        if len(bullets) < 5:
+        if len(bullets) < 1:
             bullets.append(projectile(232,532,6,(0,0,0)))
     
     if keys[pygame.K_LEFT] and man.x > man.vel:
